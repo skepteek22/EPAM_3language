@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+
+public struct Product
+{
+    public string Name { get; set; }
+    public double Price { get; set; }
+}
+
+public class Program
+{
+    private static bool IsNumber(string s)
+    {
+        foreach (char c in s)
+        {
+            if (!char.IsDigit(c))
+                return false;
+        }
+        return !string.IsNullOrEmpty(s);
+    }
+
+    private static void AddProduct(List<Product> products)
+    {
+        Console.Clear();
+        Product product = new Product();
+        Console.Write("Name: ");
+        product.Name = Console.ReadLine();
+
+        string strPrice;
+        while (true)
+        {
+            Console.Clear();
+            Console.Write("Price: ");
+            strPrice = Console.ReadLine();
+
+            if (IsNumber(strPrice))
+            {
+                product.Price = double.Parse(strPrice);
+                products.Add(product);
+                Console.WriteLine("Product has been added.");
+                System.Threading.Thread.Sleep(500);
+                Console.Clear();
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid, try again");
+                System.Threading.Thread.Sleep(500);
+                Console.Clear();
+            }
+        }
+    }
+
+    private static void DisplayProducts(List<Product> products)
+    {
+        Console.Clear();
+        Console.WriteLine("List:");
+        foreach (var product in products)
+        {
+            Console.WriteLine($"Name: {product.Name}, Price: {product.Price}");
+        }
+
+        Console.WriteLine("\nPress any key to continue...");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
+    public static void Main(string[] args)
+    {
+        List<Product> products = new List<Product>();
+        string choice;
+        int num = 0;
+
+        do
+        {
+            Console.WriteLine("Menu:");
+            Console.WriteLine("1. Add product");
+            Console.WriteLine("2. Show all products");
+            Console.WriteLine("3. Exit");
+            Console.Write("Choose: ");
+            choice = Console.ReadLine();
+
+            if (int.TryParse(choice, out num))
+            {
+                switch (num)
+                {
+                    case 1:
+                        AddProduct(products);
+                        break;
+                    case 2:
+                        DisplayProducts(products);
+                        break;
+                    case 3:
+                        Console.WriteLine("Exit");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid, try again");
+                        System.Threading.Thread.Sleep(500);
+                        Console.Clear();
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number.");
+                System.Threading.Thread.Sleep(500);
+                Console.Clear();
+            }
+
+        } while (num != 3);
+    }
+}
