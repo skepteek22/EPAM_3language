@@ -1,0 +1,119 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Product {
+    String name;
+    double price;
+}
+
+public class Main {
+    private static boolean isNumber(String s) {
+        for (char c : s.toCharArray()) {
+            if (!Character.isDigit(c))
+                return false;
+        }
+        return !s.isEmpty();
+    }
+
+    private static void addProduct(List<Product> products) {
+        Scanner scanner = new Scanner(System.in);
+        Product product = new Product();
+        System.out.print("Name: ");
+        product.name = scanner.nextLine();
+
+        String strPrice;
+        while (true) {
+            System.out.print("Price: ");
+            strPrice = scanner.nextLine();
+
+            if (isNumber(strPrice)) {
+                product.price = Double.parseDouble(strPrice);
+                products.add(product);
+                System.out.println("Product has been added.");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                clearConsole();
+                break;
+            } else {
+                System.out.println("Invalid, try again");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                clearConsole();
+            }
+        }
+    }
+
+    private static void displayProducts(List<Product> products) {
+        clearConsole();
+        System.out.println("List:");
+        for (Product product : products) {
+            System.out.println("Name: " + product.name + ", Price: " + product.price);
+        }
+
+        System.out.println("\nPress Enter to continue...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        clearConsole();
+    }
+
+    private static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    public static void main(String[] args) {
+        List<Product> products = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        String choice;
+        int num = 0;
+
+        do {
+            System.out.println("Menu:");
+            System.out.println("1. Add product");
+            System.out.println("2. Show all products");
+            System.out.println("3. Exit");
+            System.out.print("Choose: ");
+            choice = scanner.nextLine();
+
+            if (choice.matches("\\d+")) {
+                num = Integer.parseInt(choice);
+                switch (num) {
+                    case 1:
+                        addProduct(products);
+                        break;
+                    case 2:
+                        displayProducts(products);
+                        break;
+                    case 3:
+                        System.out.println("Exit");
+                        break;
+                    default:
+                        System.out.println("Invalid, try again");
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        clearConsole();
+                        break;
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a valid number.");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                clearConsole();
+            }
+
+        } while (num != 3);
+    }
+}
